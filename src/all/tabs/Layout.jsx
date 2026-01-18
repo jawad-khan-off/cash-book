@@ -1,8 +1,12 @@
 import { Outlet } from "react-router"
+import Navbar from "../../components/Navbar"
 
 const TabsLayout = () => {
   return (
-    <Outlet/>
+    <main>
+      <Navbar />
+      <Outlet />
+    </main>
   )
 }
 
