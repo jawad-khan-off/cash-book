@@ -14,7 +14,7 @@ const Navbar = () => {
       <div className="h-14 w-full flex items-center justify-center gap-x-16 border-t border-border">
         {navLink.map((item, i) => (
           <Link key={i} to={item.path}>
-            <div className={`flex flex-col items-center justify-center h-14 ${location.pathname === item.path ? 'border-t-2 border-blue-700 text-blue-700' : ''}`}>
+            <div className={`flex flex-col items-center justify-center h-14 ${location.pathname === item.path ? 'border-t-2 text-blue-600' : ''}`}>
               <span>{item.icn}</span>
               <p className='px-2'>{item.name}</p>
             </div>
