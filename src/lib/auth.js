@@ -2,19 +2,19 @@ import { ID, OAuthProvider, Query } from "appwrite";
 import { account, appwriteConfig, tableDB } from "./client";
 import { redirect } from "react-router";
 
-// export const getExistingUser = async (id) => {
-//   try {
-//     const { rows, total } = await tableDB.listRows(
-//       appwriteConfig.databaseId,
-//       appwriteConfig.usersTableId,
-//       [Query.equal("accountId", id)],
-//     );
-//     return total > 0 ? rows[0] : null;
-//   } catch (error) {
-//     console.error("Error fetching user:", error);
-//     return null;
-//   }
-// };
+export const getExistingUser = async (id) => {
+  try {
+    const { rows, total } = await tableDB.listRows(
+      appwriteConfig.databaseId,
+      appwriteConfig.usersTableId,
+      [Query.equal("accountId", id)],
+    );
+    return total > 0 ? rows[0] : null;
+  } catch (error) {
+    console.error("Error fetching user:", error);
+    return null;
+  }
+};
 
 export const storeUserData = async () => {
   try {

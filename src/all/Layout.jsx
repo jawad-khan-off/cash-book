@@ -1,34 +1,40 @@
-import React, { useEffect, useState } from 'react'
-import { Outlet, useNavigate } from 'react-router-dom' // Ensure 'react-router-dom' is used
-import { account } from '../lib/client'
+import { useEffect } from "react";
+import { Outlet, useNavigate } from "react-router-dom";
+import { account } from "../lib/client";
+import { getExistingUser, storeUserData } from "../lib/auth";
 
-const Layout = () => {
-    const [isLoading, setIsLoading] = useState(true)
-    const navigate = useNavigate()
+const PageLayout = () => {
+  const navigate = useNavigate();
 
-    useEffect(() => {
-        const checkAuth = async () => {
-            try {
-                await account.get()
-                setIsLoading(false)
-            } catch (e) {
-                console.error("Auth check failed:", e)
-                navigate("/sign-in", { replace: true })
-            }
+  useEffect(() => {
+    const authenticateUser = async () => {
+      try {
+        const user = await account.get();
+
+        if (!user?.$id) {
+          navigate("/sign-in", { replace: true });
+          return;
         }
-        checkAuth()
-    }, [navigate])
 
-    if (isLoading) {
-        return (
-            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-                <p>Loading...</p>
-                {/* You can replace this with a Spinner component */}
-            </div>
-        )
-    }
+        const existingUser = await getExistingUser(user.$id);
 
-    return <Outlet />
-}
+        if (!existingUser?.$id) {
+          await storeUserData();
+        }
+      } catch (error) {
+        console.error("Authentication error:", error);
+        navigate("/sign-in", { replace: true });
+      }
+    };
 
-export default Layout
+    authenticateUser();
+  }, [navigate]);
+
+  return (
+    <main>
+      <Outlet />
+    </main>
+  );
+};
+
+export default PageLayout;
